@@ -1,36 +1,183 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextTask - Modern To-Do Application
+
+A full-stack to-do application built with Next.js, TypeScript, Redux Toolkit, and MongoDB. Designed as a portfolio project demonstrating clean code, modern architecture, and polished UX.
+
+## Features
+
+- **User Authentication**: Register and login with JWT-based authentication
+- **Task Management**: Create, read, update, and delete tasks
+- **Task Properties**: Title, description, due date/time, priority levels, and status tracking
+- **Search & Filter**: Search by title/description, filter by priority and status
+- **Sorting**: Sort tasks by newest, oldest, due date, or priority
+- **localStorage Sync**: Non-authenticated users can create tasks locally; tasks sync to MongoDB on login
+- **Responsive Design**: Mobile-first design that works on all devices
+- **Toast Notifications**: User feedback for all CRUD operations
+- **CSV Export**: Export all tasks to CSV format
+- **Clean Architecture**: Modular components, proper TypeScript types, and organized file structure
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS v4, shadcn/ui components
+- **State Management**: Redux Toolkit with localStorage persistence
+- **Backend**: Next.js API routes
+- **Database**: MongoDB Atlas
+- **Authentication**: JWT tokens with bcryptjs password hashing
+- **UI Components**: Radix UI, Lucide icons
+- **Forms**: React Hook Form with Zod validation
+- **Notifications**: Sonner toast library
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+
+- MongoDB Atlas account
+- npm or yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables:
+   \`\`\`bash
+   cp .env.example .env.local
+   \`\`\`
 
-## Learn More
+4. Add your MongoDB URI and JWT secret to `.env.local`
 
-To learn more about Next.js, take a look at the following resources:
+5. Run the development server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+\`\`\`
+app/
+├── api/
+│   ├── auth/
+│   │   ├── login/route.ts
+│   │   └── register/route.ts
+│   └── tasks/
+│       ├── route.ts
+│       ├── [id]/route.ts
+│       └── sync/route.ts
+├── dashboard/
+│   └── page.tsx
+├── login/
+│   └── page.tsx
+├── register/
+│   └── page.tsx
+├── layout.tsx
+├── page.tsx
+└── globals.css
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
+├── auth-form.tsx
+├── export-button.tsx
+├── task-card.tsx
+├── task-filters.tsx
+├── task-form.tsx
+├── task-list.tsx
+├── task-modal.tsx
+└── ui/
+    ├── badge.tsx
+    ├── button.tsx
+    ├── card.tsx
+    ├── dialog.tsx
+    ├── form.tsx
+    ├── input.tsx
+    ├── select.tsx
+    └── textarea.tsx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+lib/
+├── api-client.ts
+├── auth.ts
+├── csv-export.ts
+├── db.ts
+├── localStorage.ts
+├── store.ts
+├── task-utils.ts
+├── hooks.ts
+└── slices/
+    ├── authSlice.ts
+    └── taskSlice.ts
+
+hooks/
+├── use-task-actions.ts
+└── use-task-sync.ts
+\`\`\`
+
+## Key Features Explained
+
+### Authentication Flow
+- Users can register with email and password
+- Passwords are hashed with bcryptjs
+- JWT tokens are generated on successful login
+- Tokens are stored in Redux and localStorage
+- Protected routes redirect unauthenticated users to login
+
+### Task Sync
+- Non-authenticated users can create tasks locally (stored in localStorage)
+- On login, local tasks are automatically synced to MongoDB
+- All subsequent operations sync with the server
+- Tasks persist across browser sessions
+
+### Search & Filter
+- Real-time search across task titles and descriptions
+- Filter by priority (Low, Medium, High)
+- Filter by status (Pending, In-Progress, Completed)
+- Sort by newest, oldest, due date, or priority
+- Reset all filters with one click
+
+### Performance Optimizations
+- Redux selectors prevent unnecessary re-renders
+- localStorage caching reduces API calls
+- Lazy loading of components
+- Optimized CSS with Tailwind
+- Proper TypeScript types for type safety
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+
+### Tasks
+- `GET /api/tasks` - Get all tasks for authenticated user
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/[id]` - Update task
+- `DELETE /api/tasks/[id]` - Delete task
+- `POST /api/tasks/sync` - Sync local tasks to server
+
+## Environment Variables
+
+\`\`\`
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+\`\`\`
+
+## Future Enhancements
+
+- Task categories/tags
+- Recurring tasks
+- Task reminders/notifications
+- Collaboration features
+- Dark mode toggle
+- Task analytics dashboard
+- Mobile app with React Native
+
+## License
+
+MIT
+
+## Author
+
+Built as a portfolio project demonstrating full-stack development skills.
